@@ -3,8 +3,11 @@
 
 ## Divisão
 O programa é dividido em 3 partes:
+
 A primeira faz a filtragem dos dados selecionando apenas o que interessa
+
 A segunda calcula a quantidade de acertos para cada candidato
+
 A terceira mostra o resultado obtido, média, valores minimos e máximos
 
 ## Descrição
