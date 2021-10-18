@@ -22,6 +22,8 @@ for i in range(0,45+1):
     resp=input("Precione enter para ir para o próximo valor\nou digite \"info\" para mais informações:")
     if resp=="info":
         print(MicroComQuestão['NU_NOTA_CN'].describe())
-        # Mostra os dados mais detalhado se for pedido
-    print('#'*20)
+        # Mostra os dados mais detalhados se for pedido
+    print()
+    print('#'*30)
+    print()
 print("Concluído.")
