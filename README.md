@@ -22,4 +22,4 @@ O arquivo que mais demora para concluir é o segundo que precisa executar a fun�
 
 Uma dica para quem converter o arquivo .py para .exe é que quando o programa executar vai salvar o resultado num arquivo e modifica-lo, nesse processo alguns anti-vírus costumam bloquear a ação e isso gera um erro no código.
 ## Resultado
-![Screenshot](screenshot.png)
+![Screenshot](Screenshot.png)
