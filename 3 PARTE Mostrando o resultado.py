@@ -16,9 +16,9 @@ for i in range(0,45+1):
     media=MicroComQuestão['NU_NOTA_CN'].mean()
     maximo=MicroComQuestão['NU_NOTA_CN'].max()
     # Calcula o mínimo, a media e o máximo
-    print(f'O valor mínimo é {minimo}')
-    print(f'O valor médio é {media}')
-    print(f'O valor máximo é {maximo}')
+    print(f'O valor mínimo é {minimo:.2f}')
+    print(f'O valor médio é {media:.2f}')
+    print(f'O valor máximo é {maximo:.2f}')
     resp=input("Precione enter para ir para o próximo valor\nou digite \"info\" para mais informações:")
     if resp=="info":
         print(MicroComQuestão['NU_NOTA_CN'].describe())
