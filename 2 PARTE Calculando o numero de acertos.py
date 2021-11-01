@@ -1,13 +1,13 @@
-from FuncoesDados import importar_dados, exportar_dados, calc_quest_acertadas_total
+import FuncoesDados
 
 # Segunda parte para calcular a quantidade de acertos
 
 
-microdados = importar_dados("MicrodadosFiltrados.csv")
-
+microdados = FuncoesDados.MicrodadosENEM("MicrodadosFiltrados.csv")
+#print(type(microdados.microdados))
 print("Iniciando o calculo:")
-microdados = calc_quest_acertadas_total(microdados)
+microdados.calc_quest_acertadas_total()
 print("Processo concluído. O resultado é:")
-print(microdados)
+print(microdados.microdados)
 
-exportar_dados(microdados, "MicrodadosFiltradosComQuest.csv")
+microdados.exportar_dados("MicrodadosFiltradosComQuest.csv")

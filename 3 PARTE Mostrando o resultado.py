@@ -1,8 +1,8 @@
-from FuncoesDados import importar_dados, mostrar_resultado 
+import FuncoesDados
 
 # Terceira parte para mostrar o resultado
 
-microdados = importar_dados("MicrodadosFiltradosComQuest.csv", colunas=None)
+microdados = FuncoesDados.MicrodadosENEM("MicrodadosFiltradosComQuest.csv", colunas=None)
 
-mostrar_resultado(microdados)
+microdados.mostrar_resultado()
 print("Concluído.")

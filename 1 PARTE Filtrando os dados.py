@@ -3,7 +3,7 @@ Código para calcular uma relação entre a quantidade de acertos e a nota no EN
 baseado nos Microdados
 Inácio Lima de Souza Filho
 """
-from FuncoesDados import importar_dados, filtrar_dados, exportar_dados
+import FuncoesDados
 
 # Primeira parte para filtragem de dados
 
@@ -22,15 +22,15 @@ diferente), também é usada para calcular a quantidade de acertos
 """
 # Mais informações estão no Dicionário disponível junto com os microdados
 
-microdados = importar_dados("MICRODADOS_ENEM_2019.csv", ColunasMatematica)
+microdados = FuncoesDados.MicrodadosENEM("MICRODADOS_ENEM_2019.csv", ColunasMatematica)
 
 ListaDeUsados = [515, 516, 517, 518, 522, 526]
 # Lista com os valores para serem usados, cada um indica o código referente a
 # uma cor de uma prova da aplicação do ENEM, não será considerado o ENEM PPL
 
 print("Iniciando a filtragem dos dados para matemática")
-NovosMicrodados = filtrar_dados(ListaDeUsados, microdados)
+NovosMicrodados = microdados.filtrar_dados(microdados, ListaDeUsados)
 print("Filtragem concluída. O resultado é:")
-print(NovosMicrodados)
+print(NovosMicrodados.microdados)
 
-exportar_dados(NovosMicrodados, "MicrodadosFiltrados.csv")
+NovosMicrodados.exportar_dados("MicrodadosFiltrados.csv")
