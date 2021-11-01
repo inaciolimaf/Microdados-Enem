@@ -15,6 +15,10 @@ Os microdados são arquivos no formato .csv que contém varias informações sob
 https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados
 
 Na parte de dicionários no arquivo dos microdados é possível ver todas as colunas do arquivo, seu significado e várias outras informações essenciais para entender o código. Por exemplo, os codígos para cada cor de prova estão descritos nos dicionários.
+
+O código está pronto para calcular a relação para a parte de Matemética da aplicação regular do ENEM 2019, não usa a reaplicação.
+
+No código, eu tentei implementar a Orientação à objeto para treinar o que eu aprendi
 ## Informações para executar
 Para executar é preciso ter o python e a bibliotaca do pandas instalados. Além de ter os microdados no mesmo local que o arquivo do python.
 
@@ -22,6 +26,6 @@ O arquivo que mais demora para concluir é o segundo que precisa executar a fun�
 
 Uma dica para quem converter o arquivo .py para .exe é que quando o programa executar vai salvar o resultado num arquivo e modifica-lo, nesse processo alguns anti-vírus costumam bloquear a ação e isso gera um erro no código.
 ## Resultado
-Ao final dos passos o resultado para 13 acertos, por exemplo, é:
+Ao final dos passos o resultado para 13 acertos em uma matéria qualquer, por exemplo, é:
 
 ![Screenshot](Screenshot.png)
