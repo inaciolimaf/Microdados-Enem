@@ -2,9 +2,8 @@ import FuncoesDados
 
 # Segunda parte para calcular a quantidade de acertos
 
-
 microdados = FuncoesDados.MicrodadosENEM("MicrodadosFiltrados.csv")
-#print(type(microdados.microdados))
+
 print("Iniciando o calculo:")
 microdados.calc_quest_acertadas_total()
 print("Processo concluído. O resultado é:")

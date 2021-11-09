@@ -13,11 +13,15 @@ class MicrodadosENEM:
         if ler_microdados:
             print("Importando...")
             self.microdados = pd.read_csv(nome, sep=';', encoding='latin-1', usecols=colunas)
+            # Lê os microdados
             print("Importado")
         else:
             self.microdados = microdados
         # Divide em duas partes porque em uma parte do código será preciso criar uma objeto
         # sem fazer a leitura de um arquivo
+        self.quantAcertos = []
+        # Cria uma lista para ser preenchidda em outra função com a quantidade de acertos
+        # e depois adicionada nos microdados
 
     def _localiza_valor_nos_microdados(self, num):
         return self.microdados.loc[self.microdados['CO_PROVA_MT'] == num]
@@ -47,23 +51,24 @@ class MicrodadosENEM:
     def _cria_nova_noluna(self, nome_da_coluna):
         self.microdados.loc[:, nome_da_coluna] = NaN
 
-    @staticmethod
-    def _calc_quest_acertadas(gabarito, respostas):
+    def _calc_quest_acertadas(self, i):
         cont = 0
+        respostas = self.microdados.iloc[i]["TX_GABARITO_MT"]
+        gabarito = self.microdados.iloc[i]["TX_RESPOSTAS_MT"]
         for i in range(0, len(respostas)):
             if respostas[i] == gabarito[i]:
                 # Se a resposta e o gabarito for o mesmo soma 1 na contagem
                 cont += 1
-        return cont
+        self.quantAcertos.append(cont)
 
     def calc_quest_acertadas_total(self):
-        self._cria_nova_noluna("QuestAcertadas")
         quantidade_de_linhas = self.microdados.loc[:, "CO_PROVA_MT"].count()
         for i in tqdm(range(0, quantidade_de_linhas)):
-            self.microdados.loc[i, 'QuestAcertadas'] = self._calc_quest_acertadas(
-                self.microdados.iloc[i]["TX_GABARITO_MT"],
-                self.microdados.iloc[i]["TX_RESPOSTAS_MT"])
+            # O tqdm é para criar a barra de progresso
+            self._calc_quest_acertadas(i)
             # Para cada linha calcula a quantidade de questões acertadas usando a função
+        self.microdados['QuestAcertadas'] = self.quantAcertos
+        # Coloca a lista nos microdados
 
     @staticmethod
     def _mostrar_resultado_com_info(microdados):

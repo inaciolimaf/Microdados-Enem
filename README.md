@@ -22,10 +22,10 @@ No código, eu tentei implementar a Orientação à objeto para treinar o que eu
 ## Informações para executar
 Para executar é preciso ter o python e a bibliotaca do pandas instalados. Além de ter os microdados no mesmo local que o arquivo do python.
 
-O arquivo que mais demora para concluir é o segundo que precisa executar a função para calcular a quantidade de acertos 3707811 vezes. Para testar se estava funcionando deixei um notebook antigo ligado por mais de 6 dias.
+O arquivo que mais demora para concluir é o segundo que precisa de, em torno, de 17 mim. Numa primeira versão do código demorava uns 6 dias para concluir, mas eu descobri que eu implementei errado o .iloc do Pandas, quando usei outra lógica o tempo diminuiu muito
 
 Uma dica para quem converter o arquivo .py para .exe é que quando o programa executar vai salvar o resultado num arquivo e modifica-lo, nesse processo alguns anti-vírus costumam bloquear a ação e isso gera um erro no código.
 ## Resultado
-Ao final dos passos o resultado para 13 acertos em uma matéria qualquer, por exemplo, é:
+Ao final dos passos o resultado para 30 acertos em matemática, por exemplo, é:
 
 ![Screenshot](Screenshot.png)

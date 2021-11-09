@@ -23,6 +23,7 @@ diferente), também é usada para calcular a quantidade de acertos
 # Mais informações estão no Dicionário disponível junto com os microdados
 
 microdados = FuncoesDados.MicrodadosENEM("MICRODADOS_ENEM_2019.csv", ColunasMatematica)
+# Inicia a objeto lendo os microdados
 
 ListaDeUsados = [515, 516, 517, 518, 522, 526]
 # Lista com os valores para serem usados, cada um indica o código referente a
