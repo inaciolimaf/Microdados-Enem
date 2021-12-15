@@ -8,7 +8,7 @@ A primeira faz a filtragem dos dados selecionando apenas o que interessa.
 
 A segunda calcula a quantidade de acertos para cada candidato.
 
-A terceira mostra o resultado obtido, média, valores mínimos e máximos.
+A terceira exporta o resultado obtido: médias, mínimos e máximos.
 
 ## Descrição
 Os microdados são arquivos no formato .csv que contém varias informações sobre os canditados que fizeram a prova. O link de acesso:
