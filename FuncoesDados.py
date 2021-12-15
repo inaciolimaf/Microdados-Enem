@@ -23,7 +23,7 @@ class MicrodadosENEM:
         # Cria uma lista para ser preenchidda em outra função com a quantidade de acertos
         # e depois adicionada nos microdados
 
-    def _localiza_valor_nos_microdados(self, num):
+    def localiza_valor_nos_microdados(self, num):
         return self.microdados.loc[self.microdados['CO_PROVA_MT'] == num]
 
     @classmethod
@@ -32,12 +32,12 @@ class MicrodadosENEM:
         for i, num in enumerate(lista_de_usados):
             if i == 0:
                 # Se for a primeira vez no laço é preciso criar um novo dataframe
-                micro_filtrados = microdados._localiza_valor_nos_microdados(num)
+                micro_filtrados = microdados.localiza_valor_nos_microdados(num)
                 novos_microdados = micro_filtrados
                 # Cria o dataframe "novos_microdados"
             else:
                 # Senão for a primeira vez é preciso juntar(merge) os dois dataframes
-                micro_filtrados = microdados._localiza_valor_nos_microdados(num)
+                micro_filtrados = microdados.localiza_valor_nos_microdados(num)
                 novos_microdados = pd.merge(novos_microdados, micro_filtrados, how='outer')
                 # Juntando os dataframes
         return cls(ler_microdados=False, microdados=novos_microdados)
