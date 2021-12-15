@@ -22,9 +22,11 @@ class MicrodadosENEM:
         self.quantAcertos = []
         # Cria uma lista para ser preenchidda em outra função com a quantidade de acertos
         # e depois adicionada nos microdados
+        self.materia = "MT"
+        # Matéria que será calculada
 
     def localiza_valor_nos_microdados(self, num):
-        return self.microdados.loc[self.microdados['CO_PROVA_MT'] == num]
+        return self.microdados.loc[self.microdados[f"CO_PROVA_{self.materia}"] == num]
 
     @classmethod
     def filtrar_dados(cls, microdados, lista_de_usados):
@@ -53,8 +55,8 @@ class MicrodadosENEM:
 
     def _calc_quest_acertadas(self, i):
         cont = 0
-        gabarito = self.microdados.iloc[i]["TX_GABARITO_MT"]
-        respostas = self.microdados.iloc[i]["TX_RESPOSTAS_MT"]
+        respostas = self.microdados.iloc[i][f"TX_GABARITO_{self.materia}"]
+        gabarito = self.microdados.iloc[i][f"TX_RESPOSTAS_{self.materia}"]
         for i in range(0, len(respostas)):
             if respostas[i] == gabarito[i]:
                 # Se a resposta e o gabarito for o mesmo soma 1 na contagem
@@ -62,7 +64,7 @@ class MicrodadosENEM:
         self.quantAcertos.append(cont)
 
     def calc_quest_acertadas_total(self):
-        quantidade_de_linhas = self.microdados.loc[:, "CO_PROVA_MT"].count()
+        quantidade_de_linhas = self.microdados.loc[:, f"CO_PROVA_{self.materia}"].count()
         for i in tqdm(range(0, quantidade_de_linhas)):
             # O tqdm é para criar a barra de progresso
             self._calc_quest_acertadas(i)
@@ -70,29 +72,27 @@ class MicrodadosENEM:
         self.microdados['QuestAcertadas'] = self.quantAcertos
         # Coloca a lista nos microdados
 
-    @staticmethod
-    def _mostrar_resultado_com_info(microdados):
-        print(microdados['NU_NOTA_MT'].describe())
+    def _mostrar_resultado_com_info(self, microdados):
+        print(microdados[f"NU_NOTA_{self.materia}"].describe())
 
     @staticmethod
     def _imprimir_espaco_para_organizar():
         print("\n" + '#' * 30 + "\n")
 
-    @staticmethod
-    def _mostrar_min_med_max(microdados):
-        minimo = microdados['NU_NOTA_MT'].min()
-        media = microdados['NU_NOTA_MT'].mean()
-        maximo = microdados['NU_NOTA_MT'].max()
+    def _mostrar_min_med_max(self, microdados):
+        minimo = microdados[f"NU_NOTA_{self.materia}"].min()
+        media = microdados[f"NU_NOTA_{self.materia}"].mean()
+        maximo = microdados[f"NU_NOTA_{self.materia}"].max()
 
-        print(f'O valor mínimo é {minimo:.2f}')
-        print(f'O valor médio é {media:.2f}')
-        print(f'O valor máximo é {maximo:.2f}')
+        print(f"O valor mínimo é {minimo:.2f}")
+        print(f"O valor médio é {media:.2f}")
+        print(f"O valor máximo é {maximo:.2f}")
 
     def mostrar_resultado(self):
         for i in range(0, 45 + 1):
             # Laço para cada valor possível de acertos
-            print(f'QUANTIDADE DE ACERTOS: {i}')
-            micro_com_questao = self.microdados.loc[self.microdados['QuestAcertadas'] == i]
+            print(f"QUANTIDADE DE ACERTOS: {i}")
+            micro_com_questao = self.microdados.loc[self.microdados["QuestAcertadas"] == i]
             # Localiza os dados com uma quantidade de acertos específica
             self._mostrar_min_med_max(micro_com_questao)
 
@@ -101,3 +101,26 @@ class MicrodadosENEM:
                 self._mostrar_resultado_com_info(micro_com_questao)
 
             self._imprimir_espaco_para_organizar()
+
+    def exportar_resultado(self):
+        print("Iniciando a exportação")
+        lista_com_todas_questoes = []
+        for i in range(0, 45+1):
+            micro_com_questao = self.microdados.loc[self.microdados["QuestAcertadas"] == i]
+            # Localiza os dados com uma quantidade de acertos específica
+            minimo = micro_com_questao[f"NU_NOTA_{self.materia}"].min()
+            media = micro_com_questao[f"NU_NOTA_{self.materia}"].mean()
+            maximo = micro_com_questao[f"NU_NOTA_{self.materia}"].max()
+            minimo = round(minimo, 2)
+            media = round(media, 2)
+            maximo = round(maximo, 2)
+            # Calcula o mínimo, a média e o máximo
+            lista_com_uma_questao = [i, minimo, media, maximo]
+            lista_com_todas_questoes.append(lista_com_uma_questao)
+            # Adiciona o resultado na lista
+        resultado_microdados = pd.DataFrame(lista_com_todas_questoes, columns=["QUAN_ACERTOS",
+                                                                               "MÍNIMO", "MÉDIA",
+                                                                               "MÁXIMO"])
+        resultado_microdados.to_excel("ResultadoMicrodados.xlsx", index=False)
+        # Cria o DataFrame e salva em xlsx
+        print("Exportação concluída")
