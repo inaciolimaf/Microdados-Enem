@@ -7,7 +7,7 @@ import FuncoesDados
 
 # Primeira parte para filtragem de dados
 materia = "MT"
-ColunasMatematica = [f"NU_NOTA_{materia}", f"TX_RESPOSTAS_{materia}", f"TX_GABARITO_{materia}", f"CO_PROVA_{materia}"]
+ColunasUsadas = [f"NU_NOTA_{materia}", f"TX_RESPOSTAS_{materia}", f"TX_GABARITO_{materia}", f"CO_PROVA_{materia}"]
 # Colunas que serão usadas para os calculos em Matemática
 """
 Significado da cada coluna:
@@ -22,14 +22,14 @@ diferente), também é usada para calcular a quantidade de acertos
 """
 # Mais informações estão no Dicionário disponível junto com os microdados
 
-microdados = FuncoesDados.MicrodadosENEM("MICRODADOS_ENEM_2019.csv", ColunasMatematica)
+microdados = FuncoesDados.MicrodadosENEM("MICRODADOS_ENEM_2019.csv", ColunasUsadas)
 # Inicia a objeto lendo os microdados
 
 ListaDeUsados = [515, 516, 517, 518]
 # Lista com os valores para serem usados, cada um indica o código referente a
 # uma cor de uma prova da aplicação do ENEM, não será considerado o ENEM PPL
 
-print("Iniciando a filtragem dos dados para matemática")
+print("Iniciando a filtragem dos dados")
 NovosMicrodados = microdados.filtrar_dados(microdados, ListaDeUsados)
 print("Filtragem concluída. O resultado é:")
 print(NovosMicrodados.microdados)
