@@ -53,8 +53,8 @@ class MicrodadosENEM:
 
     def _calc_quest_acertadas(self, i):
         cont = 0
-        respostas = self.microdados.iloc[i]["TX_GABARITO_MT"]
-        gabarito = self.microdados.iloc[i]["TX_RESPOSTAS_MT"]
+        gabarito = self.microdados.iloc[i]["TX_GABARITO_MT"]
+        respostas = self.microdados.iloc[i]["TX_RESPOSTAS_MT"]
         for i in range(0, len(respostas)):
             if respostas[i] == gabarito[i]:
                 # Se a resposta e o gabarito for o mesmo soma 1 na contagem
