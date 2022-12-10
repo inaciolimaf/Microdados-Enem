@@ -9,27 +9,29 @@ from tqdm import tqdm
 
 
 class MicrodadosENEM:
-    def __init__(self, nome=None, colunas=None, ler_microdados=True, microdados=None):
-        if ler_microdados:
-            print("Importando...")
-            self.microdados = pd.read_csv(nome, sep=';', encoding='latin-1', usecols=colunas)
-            # Lê os microdados
-            print("Importado")
-        else:
-            self.microdados = microdados
+    def __init__(self, microdados, materia: str):
+        self.microdados = microdados
         # Divide em duas partes porque em uma parte do código será preciso criar uma objeto
         # sem fazer a leitura de um arquivo
         self.quantAcertos = []
         # Cria uma lista para ser preenchidda em outra função com a quantidade de acertos
         # e depois adicionada nos microdados
-        self.materia = "MT"
+        self.materia = materia
         # Matéria que será calculada
+
+    @classmethod
+    def ler_microdados(cls, nome: str, colunas: str, materia: str):
+        print("Importando...")
+        dados = pd.read_csv(nome, sep=';', encoding='latin-1', usecols=colunas)
+        # Lê os microdados
+        print("Importado")
+        return cls(dados, materia)
 
     def localiza_valor_nos_microdados(self, num):
         return self.microdados.loc[self.microdados[f"CO_PROVA_{self.materia}"] == num]
 
     @classmethod
-    def filtrar_dados(cls, microdados, lista_de_usados):
+    def filtrar_dados(cls, microdados, lista_de_usados, materia):
         novos_microdados = None
         for i, num in enumerate(lista_de_usados):
             if i == 0:
@@ -42,7 +44,7 @@ class MicrodadosENEM:
                 micro_filtrados = microdados.localiza_valor_nos_microdados(num)
                 novos_microdados = pd.merge(novos_microdados, micro_filtrados, how='outer')
                 # Juntando os dataframes
-        return cls(ler_microdados=False, microdados=novos_microdados)
+        return cls(novos_microdados, materia)
         # Retorna um objeto com os novos microdados
 
     def exportar_dados(self, nome):
@@ -53,10 +55,8 @@ class MicrodadosENEM:
     def _cria_nova_noluna(self, nome_da_coluna):
         self.microdados.loc[:, nome_da_coluna] = NaN
 
-    def _calc_quest_acertadas(self, i):
+    def _calc_quest_acertadas(self, respostas, gabarito):
         cont = 0
-        respostas = self.microdados.iloc[i][f"TX_GABARITO_{self.materia}"]
-        gabarito = self.microdados.iloc[i][f"TX_RESPOSTAS_{self.materia}"]
         for i in range(0, len(respostas)):
             if respostas[i] == gabarito[i]:
                 # Se a resposta e o gabarito for o mesmo soma 1 na contagem
@@ -64,10 +64,9 @@ class MicrodadosENEM:
         self.quantAcertos.append(cont)
 
     def calc_quest_acertadas_total(self):
-        quantidade_de_linhas = self.microdados.loc[:, f"CO_PROVA_{self.materia}"].count()
-        for i in tqdm(range(0, quantidade_de_linhas)):
-            # O tqdm é para criar a barra de progresso
-            self._calc_quest_acertadas(i)
+        for i in tqdm(self.microdados.iterrows()):
+            # O tqdm é para ver o progresso
+            self._calc_quest_acertadas(i[1][2],i[1][3])
             # Para cada linha calcula a quantidade de questões acertadas usando a função
         self.microdados['QuestAcertadas'] = self.quantAcertos
         # Coloca a lista nos microdados
@@ -121,6 +120,8 @@ class MicrodadosENEM:
         resultado_microdados = pd.DataFrame(lista_com_todas_questoes, columns=["QUAN_ACERTOS",
                                                                                "MÍNIMO", "MÉDIA",
                                                                                "MÁXIMO"])
-        resultado_microdados.to_excel("ResultadoMicrodados.xlsx", index=False)
+        resultado_microdados.to_excel(f"{self.materia}ResultadoMicrodados.xlsx", index=False)
+
+        return resultado_microdados
         # Cria o DataFrame e salva em xlsx
         print("Exportação concluída")
