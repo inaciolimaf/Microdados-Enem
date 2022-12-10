@@ -110,16 +110,17 @@ class MicrodadosENEM:
             minimo = micro_com_questao[f"NU_NOTA_{self.materia}"].min()
             media = micro_com_questao[f"NU_NOTA_{self.materia}"].mean()
             maximo = micro_com_questao[f"NU_NOTA_{self.materia}"].max()
+            quantidade = micro_com_questao.loc[:, f"CO_PROVA_{self.materia}"].count()
             minimo = round(minimo, 2)
             media = round(media, 2)
             maximo = round(maximo, 2)
             # Calcula o mínimo, a média e o máximo
-            lista_com_uma_questao = [i, minimo, media, maximo]
+            lista_com_uma_questao = [i, minimo, media, maximo, quantidade]
             lista_com_todas_questoes.append(lista_com_uma_questao)
             # Adiciona o resultado na lista
         resultado_microdados = pd.DataFrame(lista_com_todas_questoes, columns=["QUAN_ACERTOS",
                                                                                "MÍNIMO", "MÉDIA",
-                                                                               "MÁXIMO"])
+                                                                               "MÁXIMO", "QUANTIDADE"])
         resultado_microdados.to_excel(f"{self.materia}ResultadoMicrodados.xlsx", index=False)
 
         return resultado_microdados
